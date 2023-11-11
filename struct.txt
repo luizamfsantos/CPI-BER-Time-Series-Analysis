@@ -1,0 +1,38 @@
+A. [ ] Data Preprocessing
+    - [ ] Load Customer Price Index (CPI) and Break-Even Rate (BER) Data
+    - [ ] Remove missing days
+    - [ ] Calculate the BER_yearly_t by taking the average per year
+    - [ ] Subset training data: data before September 2013
+    - [ ] Subset validation data: data between (including) September 2013 and (not including) May 2015
+    - [ ] Subset test data: data from May 2015
+[ ] Completed
+
+B. [ ] Detrend Data
+    - [ ] Fit a linear trend T to the training data T = alpha_1*t + alpha_0
+        - [ ] Estimate parameters
+    - [ ] Subtract trend
+[ ] Completed
+
+C. [ ] Fitting ARMA models
+    - [ ] Plot autocorrelation function (ACF) of the residuals
+    - [ ] Plot partial autocorrelation function (PACF) of the residuals
+    - [ ] Choose AR(p) model
+    - [ ] Calculate parameters based on p chosen in the step before
+
+D. [ ] Evaluate model
+    - [ ] Compute the 1-month-ahead forecast for the validation data (September 2013)
+    - [ ] Calculate RSME for 1-month-ahead forecasts on validation data
+
+E. [ ] Monthly Inflation Rates using CPI
+    - [ ] Calculate Monthly Inflation Rates using IR = (CPI_t-CPI_{t-1})/CPI_{t-1}
+        - [ ] Get value for February 2013
+        - [ ] Plot time series
+    - [ ] Calculate Monthly Inflation Rates using IR = ln(CPI_t) - ln(CPI_{t-1})
+        - [ ] Get value for February 2013
+        - [ ] Plot time series
+    
+F. [ ] Monthly Inflation Rates using BER
+    - [ ] Choose a representative value of BER for each month to be the last day of the month
+    - [ ] Deannualize the monthly representatives to convert to the monthly inflation Rate
+        - [ ] Use the formula BER_monthly_t = (BER_yearly_t+1)**(1/2) - 1
+        - [ ] Get value for February 2013
