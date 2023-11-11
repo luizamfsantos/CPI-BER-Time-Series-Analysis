@@ -1,38 +1,199 @@
 A. [ ] Data Preprocessing
     - [ ] Load Customer Price Index (CPI) and Break-Even Rate (BER) Data
+        - [ ] Check data types and ensure they are appropriate for analysis
+        - [ ] Handle any duplicate records, if present
+        - [ ] Examine summary statistics to identify outliers or anomalies
     - [ ] Remove missing days
+        - [ ] Choose a method for handling missing data (e.g., interpolation, deletion)
+        - [ ] Document the approach used and reasons for handling missing data in that way
     - [ ] Calculate the BER_yearly_t by taking the average per year
+        - [ ] Verify the consistency and accuracy of the calculated averages
+        - [ ] Consider visualizing the yearly trends to identify any anomalies
     - [ ] Subset training data: data before September 2013
+        - [ ] Double-check the consistency of the subset and ensure it aligns with the project requirements
+        - [ ] Document any decisions made regarding the subset selection
     - [ ] Subset validation data: data between (including) September 2013 and (not including) May 2015
+        - [ ] Confirm the inclusion/exclusion criteria for the validation subset
+        - [ ] Verify that the validation subset adequately captures relevant time periods
     - [ ] Subset test data: data from May 2015
+        - [ ] Ensure the test subset aligns with the project's forecasting goals
+        - [ ] Document the rationale for selecting May 2015 as the start date for the test data
 [ ] Completed
+
 
 B. [ ] Detrend Data
     - [ ] Fit a linear trend T to the training data T = alpha_1*t + alpha_0
         - [ ] Estimate parameters
+            - [ ] Utilize appropriate regression techniques to estimate alpha_1 and alpha_0
+            - [ ] Assess the statistical significance of the estimated parameters
+        - [ ] Validate the goodness-of-fit of the linear trend model
+            - [ ] Check for homoscedasticity and normality of residuals
+            - [ ] Consider diagnostic plots (e.g., residual plots) for model validation
     - [ ] Subtract trend
+        - [ ] Implement detrending by subtracting the estimated linear trend from the original data
+            - [ ] Verify that detrending effectively removes the linear trend
+            - [ ] Examine the detrended data for any remaining patterns or seasonality
 [ ] Completed
+
 
 C. [ ] Fitting ARMA models
     - [ ] Plot autocorrelation function (ACF) of the residuals
+        - [ ] Examine ACF to identify potential autocorrelation patterns
+        - [ ] Identify the lag value (q) for the MA component of the ARMA model
     - [ ] Plot partial autocorrelation function (PACF) of the residuals
+        - [ ] Examine PACF to identify potential autoregressive patterns
+        - [ ] Identify the lag value (p) for the AR component of the ARMA model
     - [ ] Choose AR(p) model
+        - [ ] Based on ACF and PACF analyses, determine the order (p, q) of the ARMA model
+        - [ ] Consider model selection criteria (e.g., AIC, BIC) to refine the order selection
     - [ ] Calculate parameters based on p chosen in the step before
+        - [ ] Use appropriate methods (e.g., maximum likelihood estimation) to estimate ARMA model parameters
+        - [ ] Check for stationarity of the estimated model
+[ ] Completed
 
 D. [ ] Evaluate model
     - [ ] Compute the 1-month-ahead forecast for the validation data (September 2013)
-    - [ ] Calculate RSME for 1-month-ahead forecasts on validation data
+        - [ ] Utilize the trained ARMA model to generate 1-month-ahead forecasts for each validation data point
+        - [ ] Document the forecast values for comparison
+    - [ ] Calculate RMSE for 1-month-ahead forecasts on validation data
+        - [ ] Compute the Root Mean Squared Error (RMSE) as a measure of forecast accuracy
+        - [ ] Compare the forecasted values with the actual values in the validation dataset
+        - [ ] Assess the significance of the RMSE and its implications for model performance
+[ ] Completed
 
 E. [ ] Monthly Inflation Rates using CPI
-    - [ ] Calculate Monthly Inflation Rates using IR = (CPI_t-CPI_{t-1})/CPI_{t-1}
+    - [ ] Calculate Monthly Inflation Rates using IR = (CPI_t - CPI_{t-1}) / CPI_{t-1}
         - [ ] Get value for February 2013
+            - [ ] Extract and calculate CPI values for February 2013
+            - [ ] Compute the inflation rate using the formula
         - [ ] Plot time series
+            - [ ] Visualize the calculated Monthly Inflation Rates over time
     - [ ] Calculate Monthly Inflation Rates using IR = ln(CPI_t) - ln(CPI_{t-1})
         - [ ] Get value for February 2013
+            - [ ] Extract and calculate natural logarithm of CPI values for February 2013
+            - [ ] Compute the inflation rate using the formula
         - [ ] Plot time series
-    
+            - [ ] Visualize the calculated Monthly Inflation Rates over time
+[ ] Completed
+
 F. [ ] Monthly Inflation Rates using BER
     - [ ] Choose a representative value of BER for each month to be the last day of the month
+        - [ ] Identify a suitable method for selecting representative values, considering daily fluctuations
+        - [ ] Document the criteria used for choosing representative BER values
     - [ ] Deannualize the monthly representatives to convert to the monthly inflation Rate
-        - [ ] Use the formula BER_monthly_t = (BER_yearly_t+1)**(1/2) - 1
+        - [ ] Use the formula BER_monthly_t = (BER_yearly_t + 1) ** (1/2) - 1
+            - [ ] Implement the deannualization formula for each monthly representative BER value
+            - [ ] Verify the correctness of the deannualization calculations
         - [ ] Get value for February 2013
+            - [ ] Apply the deannualization formula to calculate the BER monthly rate for February 2013
+            - [ ] Document the calculated value for future reference
+[ ] Completed
+
+G. [ ] Feature Engineering
+   - [ ] Consider creating additional features like lag features, rolling statistics, or other relevant variables.
+        - [ ] Evaluate the feasibility and relevance of lag features for capturing temporal patterns
+        - [ ] Explore the creation of rolling statistics (e.g., moving averages) to smooth out noise
+        - [ ] Identify other potential variables that may enhance model performance
+        - [ ] Document the rationale behind the selected features and their expected impact
+[ ] Completed
+
+H. [ ] Stationarity Check
+   - [ ] Check for stationarity in the time series data; apply differencing or other techniques if needed.
+        - [ ] Conduct statistical tests for stationarity (e.g., Augmented Dickey-Fuller test)
+        - [ ] Examine visual indicators such as time series plots to identify trends or seasonality
+        - [ ] If non-stationarity is detected, apply differencing or other appropriate techniques
+        - [ ] Document the results of the stationarity check and any transformations applied
+[ ] Completed
+
+I. [ ] Data Transformation
+   - [ ] Apply transformations like logarithmic transformations to stabilize variance or make the data more amenable to modeling assumptions.
+        - [ ] Assess the need for data transformation based on the characteristics of the time series
+        - [ ] Implement logarithmic transformations or other appropriate techniques
+        - [ ] Verify the effectiveness of the transformations in stabilizing variance or meeting modeling assumptions
+        - [ ] Document the chosen transformation method and its impact on the data
+[ ] Completed
+
+J. [ ] Model Validation
+   - [ ] Implement cross-validation techniques, such as k-fold cross-validation or time series-specific methods.
+        - [ ] Choose an appropriate cross-validation method based on the nature of the data (e.g., time series cross-validation)
+        - [ ] Split the data into training and validation sets using the selected cross-validation approach
+        - [ ] Train the model on the training set and validate its performance on the validation set
+        - [ ] Repeat the process for multiple folds if using k-fold cross-validation
+        - [ ] Evaluate the model's performance across different folds and assess its generalization capability
+        - [ ] Document the chosen validation method and its impact on model assessment
+[ ] Completed
+
+K. [ ] Hyperparameter Tuning
+   - [ ] Conduct hyperparameter tuning for the chosen model (e.g., ARMA) to optimize performance.
+        - [ ] Identify the hyperparameters relevant to the chosen model (e.g., order of ARMA)
+        - [ ] Define a search space for hyperparameters and select an optimization technique (e.g., grid search, random search)
+        - [ ] Implement the hyperparameter tuning process, assessing model performance for different hyperparameter combinations
+        - [ ] Evaluate the impact of tuned hyperparameters on model accuracy and generalization
+        - [ ] Document the selected hyperparameters and their effect on model optimization
+[ ] Completed
+
+L. [ ] Residual Analysis
+   - [ ] Conduct a thorough analysis of residuals to ensure they resemble white noise.
+        - [ ] Examine statistical properties of residuals (e.g., mean, variance) to assess their stationarity
+        - [ ] Plot the distribution of residuals and check for normality
+        - [ ] Conduct autocorrelation function (ACF) and partial autocorrelation function (PACF) analysis on residuals
+        - [ ] Use statistical tests (e.g., Ljung-Box test) to check for independence of residuals
+        - [ ] Ensure there are no discernible patterns or trends in the residual plots
+        - [ ] Document the results of the residual analysis and any actions taken to address issues
+[ ] Completed
+
+M. [ ] Model Comparison
+   - [ ] Compare the performance of different models, exploring alternatives like SARIMA, SARIMAX, or machine learning models.
+        - [ ] Implement alternative time series models (e.g., SARIMA, SARIMAX) or machine learning models
+        - [ ] Evaluate the performance of each model using appropriate metrics (e.g., RMSE, MAE)
+        - [ ] Compare the results of different models to identify the most effective one
+        - [ ] Consider the interpretability, computational complexity, and other practical aspects of each model
+        - [ ] Document the findings and rationale for selecting the final model
+[ ] Completed
+
+N. [ ] Forecasting Horizon
+   - [ ] Evaluate the model's performance for longer forecasting periods, beyond one month.
+        - [ ] Extend the forecasting period to multiple months (e.g., 3 months, 6 months)
+        - [ ] Assess the model's accuracy and stability over the extended forecasting horizon
+        - [ ] Consider adjusting the model or incorporating additional features if performance degrades over a longer period
+        - [ ] Document the results and insights gained from the extended forecasting analysis
+[ ] Completed
+
+O. [ ] Outliers Detection and Treatment
+   - [ ] Identify and handle outliers in the data to mitigate their impact on model performance.
+        - [ ] Use statistical methods (e.g., z-score, IQR) to identify potential outliers
+        - [ ] Visualize the data to pinpoint any unusual patterns or extreme values
+        - [ ] Decide on an appropriate strategy for handling outliers (e.g., removal, transformation)
+        - [ ] Implement the chosen strategy and verify the impact on model performance
+        - [ ] Document the outlier detection process, treatment approach, and the results obtained
+[ ] Completed
+
+P. [ ] Documentation
+   - [ ] Document all steps, assumptions, and decisions for reproducibility and transparency.
+        - [ ] Create a comprehensive document outlining each step taken in the analysis
+        - [ ] Include details on data preprocessing, model selection, hyperparameter tuning, and any other significant actions
+        - [ ] Clearly document assumptions made during the analysis
+        - [ ] Provide explanations for decisions, such as outlier handling or feature engineering choices
+        - [ ] Include references to external sources or documentation for methodologies used
+        - [ ] Ensure the documentation is clear and organized for ease of understanding and reproducibility
+[ ] Completed
+
+Q. [ ] Communication
+   - [ ] Prepare a summary or report of findings and share results with stakeholders; communicate any limitations or uncertainties.
+        - [ ] Summarize key findings, insights, and recommendations from the analysis
+        - [ ] Clearly communicate the results to stakeholders, considering their level of technical expertise
+        - [ ] Highlight any limitations or uncertainties in the analysis and results
+        - [ ] Provide context for decision-making based on the outcomes of the time series analysis
+        - [ ] Be prepared to address questions and engage in discussions with stakeholders
+        - [ ] Document any feedback or additional requirements provided by stakeholders
+[ ] Completed
+
+R. [ ] Future Work
+   - [ ] Outline potential future work or improvements, such as exploring additional data sources or refining the model.
+        - [ ] Identify areas for improvement or expansion in the time series analysis
+        - [ ] Explore the possibility of incorporating additional relevant data sources
+        - [ ] Consider refining the model by adjusting parameters or exploring alternative modeling approaches
+        - [ ] Outline any research questions or hypotheses for future investigations
+        - [ ] Document potential enhancements to the analysis process or methodology
+        - [ ] Acknowledge any constraints or dependencies that may impact future work
+[ ] Completed
