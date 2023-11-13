@@ -15,6 +15,7 @@ def load_data(file_path):
     """
     data = pd.read_csv(file_path)
     data = update_dtypes(data)
+    data = remove_missing_values(data)
     return data
 
 def update_dtypes(data):
@@ -33,6 +34,26 @@ def update_dtypes(data):
     data['value'] = pd.to_numeric(data['value'])
     return data
 
+def remove_missing_values(data):
+    ''' 
+    Handle missing values in the data.
+    Remove the rows with missing values.
+
+    Parameters:
+    - data (pd.DataFrame): Input data.
+
+    Returns:
+    - pd.DataFrame: Updated data.
+    '''
+    # Check if there are NaN in the 'values' column
+    if data['value'].isnull().values.any():
+        # Remove rows with NaN
+        data = data.dropna()
+    # Check if there are NaN in the 'date' column
+    if data['date'].isnull().values.any():
+        # Remove rows with NaN
+        data = data.dropna()
+    return data
 
 def calculate_yearly_average(data):
     """
@@ -70,3 +91,9 @@ if __name__ == '__main__':
     ber = load_data(ber_path)
     print(cpi.head())
     print(ber.head())
+
+    # # Save cleaned data to csv
+    # cpi = remove_missing_values(cpi)
+    # ber = remove_missing_values(ber)
+    # cpi.to_csv('data/processed/CPI.csv', index=False)
+    # ber.to_csv('data/processed/BER.csv', index=False)
