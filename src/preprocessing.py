@@ -18,6 +18,22 @@ def load_data(file_path):
     data = remove_missing_values(data)
     return data
 
+def load_indexed_data(file_path):
+    """
+    Load csv data from a given path.
+
+    Parameters:
+    - file_path (str): Path to the data file.
+
+    Returns:
+    - pd.DataFrame: Loaded data.
+        Correctly formatted data should have two columns:
+        - t: Time index of the observation
+        - value: Value of the observation
+    """
+    data = pd.read_csv(file_path)
+    return data
+
 def update_dtypes(data):
     '''
     Update the data types of the columns.

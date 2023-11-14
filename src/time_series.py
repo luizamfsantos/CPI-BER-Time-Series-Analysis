@@ -21,3 +21,10 @@ def fit_arma_model(data, order):
     """
     # Implementation goes here
     pass
+
+if __name__ == '__main__':
+    # Load data
+    from preprocessing import load_indexed_data
+    path_cpi_train_residuals = 'data/processed/cpi_train_residuals.csv'
+    cpi_train_residuals = load_indexed_data(path_cpi_train_residuals)
+    print(cpi_train_residuals.head())
