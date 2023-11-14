@@ -1,11 +1,10 @@
 A. [ ] Data Preprocessing
-    - [ ] Load Customer Price Index (CPI) and Break-Even Rate (BER) Data
-        - [ ] Check data types and ensure they are appropriate for analysis
-        - [ ] Handle any duplicate records, if present
-        - [ ] Examine summary statistics to identify outliers or anomalies
-    - [ ] Remove missing days
-        - [ ] Choose a method for handling missing data (e.g., interpolation, deletion)
-        - [ ] Document the approach used and reasons for handling missing data in that way
+    - [X] Load Customer Price Index (CPI) and Break-Even Rate (BER) Data
+        - [X] Check data types and ensure they are appropriate for analysis
+        - [X] Handle any duplicate records, if present
+    - [X] Remove missing days
+        - [X] Choose a method for handling missing data (e.g., interpolation, deletion)
+        - [X] Document the approach used and reasons for handling missing data in that way
     - [ ] Calculate the BER_yearly_t by taking the average per year
         - [ ] Verify the consistency and accuracy of the calculated averages
         - [ ] Consider visualizing the yearly trends to identify any anomalies
