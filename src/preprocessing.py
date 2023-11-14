@@ -115,6 +115,25 @@ def create_index(data, start_date=None):
 
     return data
 
+def split_data(data, split_date):
+    ''' 
+    Split the data into two parts based on a given date.
+
+    Parameters:
+    - data (pd.DataFrame): Input data.
+    - split_date (str): Date to split the data.
+
+    Returns:
+    - Tuple[pd.DataFrame, pd.DataFrame]: The two parts of the data.
+    '''
+    # Assuming the DataFrame has a datetime column named 'date'
+    data['date'] = pd.to_datetime(data['date'])
+
+    # Split the data into two parts based on the given date
+    train = data[data['date'] < split_date]
+    test = data[data['date'] >= split_date]
+
+    return train, test
 
 def calculate_yearly_average(data):
     """
@@ -129,43 +148,21 @@ def calculate_yearly_average(data):
     # Implementation goes here
     pass
 
-def subset_data(data, start_date, end_date):
-    """
-    Subset data based on specified date ranges.
-
-    Parameters:
-    - data (pd.DataFrame): Input data.
-    - start_date (str): Start date for the subset.
-    - end_date (str): End date for the subset.
-
-    Returns:
-    - pd.DataFrame: Subset of the data.
-    """
-    # Implementation goes here
-    pass
 
 if __name__ == '__main__':
     # Load data
-    cpi_path = 'data/raw/CPI.csv'
-    ber_path = 'data/raw/T10YIE.csv'
-    cpi = load_data(cpi_path)
-    ber = load_data(ber_path)
+    path_cpi_train = 'data/processed/cpi_train.csv'
+    cpi_train = load_data(path_cpi_train)
 
-    # Remove missing values
-    cpi = remove_missing_values(cpi)
-    ber = remove_missing_values(ber)
-    
-    # Get monthly data
-    cpi_monthly = daily_to_monthly(cpi)
-    ber_monthly = daily_to_monthly(ber)
+    # Calculate monthly
+    cpi_train_monthly = daily_to_monthly(cpi_train)
 
     # Create index
-    cpi_monthly = create_index(cpi_monthly)
-    ber_monthly = create_index(ber_monthly)
-
+    cpi_train_monthly = create_index(cpi_train_monthly)
+    
     # Print data
-    print(cpi_monthly.head())
-    print(ber_monthly.head())
+    print(cpi_train_monthly.head())
+    print(cpi_train_monthly.tail())
 
     # # Save indexed data, but only keep the 't' and 'value' columns
     # cpi_monthly[['t', 'value']].to_csv('data/processed/cpi_indexed.csv', index=False)
