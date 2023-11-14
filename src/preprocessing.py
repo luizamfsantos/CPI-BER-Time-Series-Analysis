@@ -153,17 +153,23 @@ if __name__ == '__main__':
     # Load data
     path_cpi_train = 'data/processed/cpi_train.csv'
     cpi_train = load_data(path_cpi_train)
+    path_cpi_test = 'data/processed/cpi_test.csv'
+    cpi_test = load_data(path_cpi_test)
 
     # Calculate monthly
     cpi_train_monthly = daily_to_monthly(cpi_train)
+    cpi_test_monthly = daily_to_monthly(cpi_test)
 
     # Create index
     cpi_train_monthly = create_index(cpi_train_monthly)
-    
-    # Print data
-    print(cpi_train_monthly.head())
-    print(cpi_train_monthly.tail())
+    cpi_test_monthly = create_index(cpi_test_monthly, start_date=cpi_train_monthly['date'].min())
 
-    # # Save indexed data, but only keep the 't' and 'value' columns
-    # cpi_monthly[['t', 'value']].to_csv('data/processed/cpi_indexed.csv', index=False)
-    # ber_monthly[['t', 'value']].to_csv('data/processed/ber_indexed.csv', index=False)
+    # # Print data
+    # print(cpi_train_monthly.head())
+    # print(cpi_train_monthly.tail())
+    # print(cpi_test_monthly.head())
+    # print(cpi_test_monthly.tail())
+
+    # Save indexed data, but only keep the 't' and 'value' columns
+    cpi_train_monthly[['t', 'value']].to_csv('data/processed/cpi_train_indexed.csv', index=False)
+    cpi_test_monthly[['t', 'value']].to_csv('data/processed/cpi_test_indexed.csv', index=False)
