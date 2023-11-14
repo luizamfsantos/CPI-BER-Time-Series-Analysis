@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import pandas as pd
-import statsmodels.api as sm
+from statsmodels.tsa.api import AutoReg
 
 
 def plot_acf_pacf(residuals):
@@ -25,15 +25,19 @@ def fit_arma_model(data, order):
 
     Parameters:
     - data (pd.Series): Time series data.
-    - order (Tuple[int, int]): Order of the ARIMA model (p, d, q).
+    - order (Tuple[int, int]): Order of the ARMA model (p, q).
 
     Returns:
-    - Model: Fitted ARIMA model.
+    - Model: Fitted ARMA model.
     """
-    model = sm.tsa.ARIMA(data, order=order)
-    results = model.fit()
+    p, q = order
 
-    return results
+    # Fit ARMA model
+    model = AutoReg(data, lags=p, trend='c')  # 'c' includes a constant term
+    fitted_model = model.fit()
+
+    return fitted_model
+
 
 
 if __name__ == '__main__':
@@ -46,7 +50,7 @@ if __name__ == '__main__':
     # plot_acf_pacf(cpi_train_residuals['residuals'])
 
     # Fit AR(2)
-    order = (2, 0, 0)
+    order = (2, 0)
     model = fit_arma_model(cpi_train_residuals['residuals'], order)
 
     # Return model summary
@@ -57,4 +61,4 @@ if __name__ == '__main__':
 
     # Calculate RSME
     rmse = model.resid.std()
-    print(rmse)
+    print('RMSE:', rmse)
