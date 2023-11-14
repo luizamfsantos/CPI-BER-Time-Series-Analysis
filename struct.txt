@@ -8,10 +8,10 @@ A. [ ] Data Preprocessing
     - [ ] Calculate the BER_yearly_t by taking the average per year
         - [ ] Verify the consistency and accuracy of the calculated averages
         - [ ] Consider visualizing the yearly trends to identify any anomalies
-    - [ ] Subset training data: data before September 2013
-        - [ ] Double-check the consistency of the subset and ensure it aligns with the project requirements
-        - [ ] Document any decisions made regarding the subset selection
-    - [ ] Subset validation data: data between (including) September 2013 and (not including) May 2015
+    - [X] Subset training data: data before September 2013
+        - [X] Double-check the consistency of the subset and ensure it aligns with the project requirements
+        - [X] Document any decisions made regarding the subset selection
+    - [] Subset validation data: data between (including) September 2013 and (not including) May 2015
         - [ ] Confirm the inclusion/exclusion criteria for the validation subset
         - [ ] Verify that the validation subset adequately captures relevant time periods
     - [ ] Subset test data: data from May 2015
@@ -20,35 +20,34 @@ A. [ ] Data Preprocessing
 [ ] Completed
 
 
-B. [ ] Detrend Data
-    - [ ] Fit a linear trend T to the training data T = alpha_1*t + alpha_0
-        - [ ] Estimate parameters
-            - [ ] Utilize appropriate regression techniques to estimate alpha_1 and alpha_0
-            - [ ] Assess the statistical significance of the estimated parameters
-        - [ ] Validate the goodness-of-fit of the linear trend model
-            - [ ] Check for homoscedasticity and normality of residuals
-            - [ ] Consider diagnostic plots (e.g., residual plots) for model validation
-    - [ ] Subtract trend
-        - [ ] Implement detrending by subtracting the estimated linear trend from the original data
-            - [ ] Verify that detrending effectively removes the linear trend
-            - [ ] Examine the detrended data for any remaining patterns or seasonality
-[ ] Completed
+B. [X] Detrend Data
+    - [X] Fit a linear trend T to the training data T = alpha_1*t + alpha_0
+        - [X] Estimate parameters
+            - [X] Utilize appropriate regression techniques to estimate alpha_1 and alpha_0
+            - [X] Assess the statistical significance of the estimated parameters
+        - [X] Validate the goodness-of-fit of the linear trend model
+            - [X] Consider diagnostic plots (e.g., residual plots) for model validation
+    - [X] Subtract trend
+        - [X] Implement detrending by subtracting the estimated linear trend from the original data
+            - [X] Verify that detrending effectively removes the linear trend
+            - [X] Examine the detrended data for any remaining patterns or seasonality
+[X] Completed
 
 
-C. [ ] Fitting ARMA models
-    - [ ] Plot autocorrelation function (ACF) of the residuals
-        - [ ] Examine ACF to identify potential autocorrelation patterns
-        - [ ] Identify the lag value (q) for the MA component of the ARMA model
-    - [ ] Plot partial autocorrelation function (PACF) of the residuals
-        - [ ] Examine PACF to identify potential autoregressive patterns
-        - [ ] Identify the lag value (p) for the AR component of the ARMA model
-    - [ ] Choose AR(p) model
-        - [ ] Based on ACF and PACF analyses, determine the order (p, q) of the ARMA model
-        - [ ] Consider model selection criteria (e.g., AIC, BIC) to refine the order selection
-    - [ ] Calculate parameters based on p chosen in the step before
-        - [ ] Use appropriate methods (e.g., maximum likelihood estimation) to estimate ARMA model parameters
-        - [ ] Check for stationarity of the estimated model
-[ ] Completed
+C. [X] Fitting ARMA models
+    - [X] Plot autocorrelation function (ACF) of the residuals
+        - [X] Examine ACF to identify potential autocorrelation patterns
+        - [X] Identify the lag value (q) for the MA component of the ARMA model
+    - [X] Plot partial autocorrelation function (PACF) of the residuals
+        - [X] Examine PACF to identify potential autoregressive patterns
+        - [X] Identify the lag value (p) for the AR component of the ARMA model
+    - [X] Choose AR(p) model
+        - [X] Based on ACF and PACF analyses, determine the order (p, q) of the ARMA model
+        - [X] Consider model selection criteria (e.g., AIC, BIC) to refine the order selection
+    - [X] Calculate parameters based on p chosen in the step before
+        - [X] Use appropriate methods (e.g., maximum likelihood estimation) to estimate ARMA model parameters
+        - [X] Check for stationarity of the estimated model
+[X] Completed
 
 D. [ ] Evaluate model
     - [ ] Compute the 1-month-ahead forecast for the validation data (September 2013)
