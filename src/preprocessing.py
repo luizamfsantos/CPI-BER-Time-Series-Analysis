@@ -55,6 +55,67 @@ def remove_missing_values(data):
         data = data.dropna()
     return data
 
+def daily_to_monthly(data):
+    ''' 
+    Take the first observation of each month.
+    Consider that some months don't have observation for day 1,
+    in which case the first observation of the month is the first
+    observation of the month with an observation.
+    For example, January has no observation for day 1 until day 24,
+    in which case the first observation of January is the observation
+    of day 24.
+
+    Parameters:
+    - data (pd.DataFrame): Input data.
+
+    Returns:
+    - pd.DataFrame: Data with only the first observation of each month.
+    '''
+    # Ensure that the 'date' column is of datetime type
+    assert data['date'].dtype == 'datetime64[ns]', "The 'date' column must be of datetime64[ns] type."
+    
+    # Group by month and find the minimum date for each month
+    monthly_data = data.sort_values('date').groupby(data['date'].dt.to_period("M")).first().reset_index(drop=True)
+
+    # Alter the date to be the first day of the month
+    monthly_data['date'] = monthly_data['date'].dt.to_period('M').dt.to_timestamp()
+
+    return monthly_data
+
+
+def create_index(data, start_date=None):
+    '''
+    Create an index column for the data based on date. 
+    It increases by 1 each month.
+    If start_date is not specified, the first date of the data is used.
+
+    Parameters:
+    - data (pd.DataFrame): Input data.
+
+    Returns:
+    - pd.DataFrame: Data with an index column.
+    '''
+    # Ensure that there is only one entry per month
+    unique_month_count = len(data['date'].dt.to_period('M').dt.to_timestamp().unique())
+    assert len(data['date']) == unique_month_count, "There should be only one entry per month."
+
+    # Ensure that the 'date' column is sorted, if not, sort it
+    if not data['date'].is_monotonic_increasing:
+        data = data.sort_values('date').reset_index(drop=True)
+    
+    # If not specified, use the first date of the data at time 0
+    if start_date is None:
+        start_date = data['date'].min() 
+    
+    # Convert dates without a day to the first day of the month
+    data['date'] = data['date'].apply(lambda x: x + pd.offsets.MonthBegin(0))
+    
+    # Create the index column called 't'
+    data['t'] = (data['date'].dt.to_period('M') - start_date.to_period('M')).apply(lambda x: x.n)
+
+    return data
+
+
 def calculate_yearly_average(data):
     """
     Calculate the yearly average of a given variable.
@@ -89,11 +150,23 @@ if __name__ == '__main__':
     ber_path = 'data/raw/T10YIE.csv'
     cpi = load_data(cpi_path)
     ber = load_data(ber_path)
-    print(cpi.head())
-    print(ber.head())
 
-    # # Save cleaned data to csv
-    # cpi = remove_missing_values(cpi)
-    # ber = remove_missing_values(ber)
-    # cpi.to_csv('data/processed/CPI.csv', index=False)
-    # ber.to_csv('data/processed/BER.csv', index=False)
+    # Remove missing values
+    cpi = remove_missing_values(cpi)
+    ber = remove_missing_values(ber)
+    
+    # Get monthly data
+    cpi_monthly = daily_to_monthly(cpi)
+    ber_monthly = daily_to_monthly(ber)
+
+    # Create index
+    cpi_monthly = create_index(cpi_monthly)
+    ber_monthly = create_index(ber_monthly)
+
+    # Print data
+    print(cpi_monthly.head())
+    print(ber_monthly.head())
+
+    # # Save indexed data, but only keep the 't' and 'value' columns
+    # cpi_monthly[['t', 'value']].to_csv('data/processed/cpi_indexed.csv', index=False)
+    # ber_monthly[['t', 'value']].to_csv('data/processed/ber_indexed.csv', index=False)
