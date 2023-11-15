@@ -121,7 +121,9 @@ def create_index(data, start_date=None):
     
     # If not specified, use the first date of the data at time 0
     if start_date is None:
-        start_date = data['date'].min() 
+        start_date = data['date'].min()
+    else:
+        start_date = pd.to_datetime(start_date) 
     
     # Convert dates without a day to the first day of the month
     data['date'] = data['date'].apply(lambda x: x + pd.offsets.MonthBegin(0))
