@@ -95,6 +95,12 @@ if __name__ == '__main__':
     trend_parameters = fit_linear_trend(cpi_train_monthly[['t','value']])
     print('Trend parameters:', trend_parameters)
 
+    # # Save trend parameters
+    # # uncouple tuple
+    # alpha_1, alpha_0 = trend_parameters
+    # trend_parameters_df = pd.DataFrame({'alpha_1': [alpha_1], 'alpha_0': [alpha_0]})
+    # trend_parameters_df.to_csv('data/processed/trend_parameters.csv', index=False)
+
     # Subtract trend
     residuals = subtract_trend(cpi_train_monthly, trend_parameters)
 
