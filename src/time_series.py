@@ -59,5 +59,10 @@ if __name__ == '__main__':
     # Print model parameters
     print('Model parameters:', model.params)
 
+    # Decompose model parameters
+    phi_1 = model.params[1]
+    phi_2 = model.params[2]
+
     # Save model parameters
-    # model.params.to_csv('data/processed/arma_model_params.csv', index=False)
+    model_parameters_df = pd.DataFrame({'phi_1': [phi_1], 'phi_2': [phi_2]})
+    model_parameters_df.to_csv('data/processed/arma_model_params.csv', index=False)
