@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import pandas as pd
 from statsmodels.tsa.api import AutoReg
-
+import numpy as np
 
 def plot_acf_pacf(residuals):
     """
@@ -37,6 +37,35 @@ def fit_arma_model(data, order):
     fitted_model = model.fit()
 
     return fitted_model
+
+def subtract_ar(data, ar_params):
+    ''' 
+    Subtract the AR model from the data.
+
+    Parameters:
+    - data (pd.DataFrame): Time series data with a column named 't'.
+    - ar_params (Tuple[float]): Tuple of AR model parameters.
+
+    Returns:
+    - pd.DataFrame: DataFrame with original 't' and residuals from the AR model.
+    '''
+    # Extract the time series values from the 't' column
+    time_series = data['residuals']
+
+    # Calculate the residuals using the AR model
+    residuals = np.zeros_like(time_series)
+
+    for i in range(len(ar_params), len(time_series)):
+        for j in range(len(ar_params)):
+            residuals[i] += ar_params[j] * time_series[i - j - 1]
+
+    # Create a DataFrame with the original 't' values and residuals
+    result_data = pd.DataFrame({
+        't': data['t'],
+        'residuals': residuals
+    })
+
+    return result_data
 
 
 
