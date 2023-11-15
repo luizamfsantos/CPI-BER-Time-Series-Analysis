@@ -59,6 +59,5 @@ if __name__ == '__main__':
     # Print model parameters
     print('Model parameters:', model.params)
 
-    # Calculate RSME
-    rmse = model.resid.std()
-    print('RMSE:', rmse)
+    # Save model parameters
+    # model.params.to_csv('data/processed/arma_model_params.csv', index=False)
