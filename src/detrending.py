@@ -2,31 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-def plot_data(data, x_col, y_col, title, x_label, y_label):
-    ''' 
-    Plot the data.
-
-    Parameters:
-    - data (pd.DataFrame): Input data.
-    - x_col (str): Column name for x-axis.
-    - y_col (str): Column name for y-axis.
-    - title (str): Title of the plot.
-    - x_label (str): Label for the x-axis.
-    - y_label (str): Label for the y-axis.
-
-    Returns:
-    - None
-
-    Prints:
-    - Plot of the data.
-    '''
-    plt.figure(figsize=(10, 5))
-    plt.plot(data[x_col], data[y_col])
-    plt.title(title)
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.show()
-
 def fit_linear_trend(data):
     """
     Fit a linear trend to the data and return trend parameters.
