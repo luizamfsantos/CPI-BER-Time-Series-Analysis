@@ -2,23 +2,19 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 
-def fit_linear_trend(data):
-    """
-    Fit a linear trend to the data and return trend parameters.
+def train_linear_regression(X,y):
+    model = LinearRegression().fit(X,y)
+    return model
 
-    Parameters:
-    - data (pd.DataFrame): Time series data with index 't' int and 'value' columns.
+def get_linear_coefficients(model):
+    coefficients = [model.coef_[0], model.intercept_]
+    return coefficients
 
-    Returns:
-    - Tuple[float, float]: Trend parameters (alpha_1, alpha_0).
-    """
-    reg = LinearRegression()
-    reg.fit(data[['t']], data['value'])
+def print_linear_equation(coefficients):
+    print(f'The linear trend is given by F(t) = {coefficients[0]:.2f} * t + {coefficients[1]:.2f}')
 
-    alpha_1 = reg.coef_[0]
-    alpha_0 = reg.intercept_
-
-    return (alpha_1, alpha_0)
+def predict_with_linear_model(model, X):
+    return model.predict(X)
    
 
 def subtract_trend(data, trend_parameters):
