@@ -73,28 +73,26 @@ def remove_missing_values(data):
 
 def daily_to_monthly(data):
     ''' 
-    Take the first observation of each month.
-    Consider that some months don't have observation for day 1,
-    in which case the first observation of the month is the first
-    observation of the month with an observation.
-    For example, January has no observation for day 1 until day 24,
-    in which case the first observation of January is the observation
-    of day 24.
+    While data in the file on a daily basis, CPI only changes on a monthly basis.
+    Hense, the monthly CPI can be obtained by taking the CPI of any day during a month.
 
     Parameters:
     - data (pd.DataFrame): Input data.
 
     Returns:
-    - pd.DataFrame: Data with only the first observation of each month.
+    - pd.DataFrame: Data with one observation per month.
     '''
     # Ensure that the 'date' column is of datetime type
     assert data['date'].dtype == 'datetime64[ns]', "The 'date' column must be of datetime64[ns] type."
     
-    # Group by month and find the minimum date for each month
-    monthly_data = data.sort_values('date').groupby(data['date'].dt.to_period("M")).first().reset_index(drop=True)
+    # Copy the data to avoid modifying the original data
+    monthly_data = data.copy()
 
-    # Alter the date to be the first day of the month
-    monthly_data['date'] = monthly_data['date'].dt.to_period('M').dt.to_timestamp()
+    # Create year month column
+    monthly_data['year_month'] = monthly_data['date'].dt.strftime('%Y-%m')
+
+    # Drop duplicates
+    monthly_data = monthly_data.drop_duplicates(subset=['year_month'], keep = 'first').reset_index().drop(columns=['index'])
 
     return monthly_data
 
