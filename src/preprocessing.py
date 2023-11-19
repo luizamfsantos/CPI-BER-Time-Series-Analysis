@@ -131,23 +131,24 @@ def create_index(data, start_date=None):
 
     return data
 
-def split_data(data, split_date):
+def split_data(data, split_date, date_col = 'date'):
     ''' 
     Split the data into two parts based on a given date.
 
     Parameters:
     - data (pd.DataFrame): Input data.
     - split_date (str): Date to split the data.
+    - date_col (str): Name of the date column.
 
     Returns:
     - Tuple[pd.DataFrame, pd.DataFrame]: The two parts of the data.
     '''
-    # Assuming the DataFrame has a datetime column named 'date'
-    data['date'] = pd.to_datetime(data['date'])
+    # Ensure date_col is in the data
+    assert date_col in data.columns, f"Column {date_col} is not in the data."
 
     # Split the data into two parts based on the given date
-    train = data[data['date'] < split_date]
-    test = data[data['date'] >= split_date]
+    train = data[data[date_col] < split_date]
+    test = data[data[date_col] >= split_date]
 
     return train, test
 
