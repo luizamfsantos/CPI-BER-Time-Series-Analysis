@@ -11,12 +11,15 @@ def plot_acf_pacf(residuals):
     Parameters:
     - residuals (pd.Series): Residuals from the ARMA model.
     """
+    fig, ax = plt.subplots(nrows=2, ncols=1, figsize=(8, 10))
+
     # Plot autocorrelation function
-    plot_acf(residuals, lags=20, title='Autocorrelation Function (ACF)')
-    plt.show()
+    plot_acf(residuals, lags=20, title='Autocorrelation Function (ACF)', ax=ax[0])
 
     # Plot partial autocorrelation function
-    plot_pacf(residuals, lags=20, title='Partial Autocorrelation Function (PACF)')
+    plot_pacf(residuals, lags=20, title='Partial Autocorrelation Function (PACF)', ax=ax[1])
+
+    plt.tight_layout()
     plt.show()
 
 def fit_arma_model(data, order):
