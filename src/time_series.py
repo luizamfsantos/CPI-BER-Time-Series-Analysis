@@ -3,6 +3,7 @@ from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 import pandas as pd
 from statsmodels.tsa.api import AutoReg
 import numpy as np
+from src.validation import rsme
 
 def plot_acf_pacf(residuals):
     """
@@ -100,6 +101,22 @@ def plot_ar_rmse(data):
 
     # Show plot
     plt.show()
+
+def fit_AR_model(residuals, num_lags):
+    rmse_train = []
+
+    for n in range(1, num_lags + 1):
+        # fit AR model
+        model = fit_arma_model(residuals, order=(n, 0))
+
+        # predict residuals
+        predictions = model.predict(start=n, end=len(residuals) - 1)
+
+        # calculate RMSE
+        rmse = rsme(predictions, residuals[n:])
+        rmse_train.append((n, rmse))
+
+    return rmse_train
 
 
 if __name__ == '__main__':
