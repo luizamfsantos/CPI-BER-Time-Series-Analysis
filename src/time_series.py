@@ -102,21 +102,22 @@ def plot_ar_rmse(data):
     # Show plot
     plt.show()
 
-def fit_AR_model(residuals, num_lags):
-    rmse_train = []
+def calculate_AR_RMSE(residuals, max_lags):
+    rmse_per_lag = []
 
-    for n in range(1, num_lags + 1):
-        # fit AR model
-        model = fit_arma_model(residuals, order=(n, 0))
+    for lag in range(1, max_lags + 1):
+        # Fit AR model
+        ar_model = fit_arma_model(residuals, order
+        =(lag, 0))
 
-        # predict residuals
-        predictions = model.predict(start=n, end=len(residuals) - 1)
+        # Predict residuals
+        predicted_residuals = ar_model.predict(start=lag, end=len(residuals) - 1)
 
-        # calculate RMSE
-        rmse = rsme(predictions, residuals[n:])
-        rmse_train.append((n, rmse))
+        # Calculate RMSE
+        rmse = rsme(predicted_residuals, residuals[lag:])
+        rmse_per_lag.append((lag, rmse))
 
-    return rmse_train
+    return rmse_per_lag
 
 
 if __name__ == '__main__':
