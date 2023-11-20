@@ -1,85 +1,113 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
+import numpy as np
 
-def train_linear_regression(X,y):
-    model = LinearRegression().fit(X,y)
+def train_linear_regression(X, y):
+    """
+    Trains a linear regression model on the given input features X and target variable y.
+
+    Parameters:
+    X (array-like): Input features.
+    y (array-like): Target variable.
+
+    Returns:
+    model: Trained linear regression model.
+    """
+    X_reshaped = np.array(X).reshape(-1, 1)
+    model = LinearRegression().fit(X_reshaped, y)
     return model
 
 def get_linear_coefficients(model):
+    """
+    Returns the coefficients of a linear regression model.
+
+    Parameters:
+    model (object): The linear regression model.
+
+    Returns:
+    list: A list containing the coefficients [slope, intercept].
+    """
     coefficients = [model.coef_[0], model.intercept_]
     return coefficients
 
 def print_linear_equation(coefficients):
+    """
+    Prints the linear equation representing the trend.
+
+    Parameters:
+    coefficients (list): A list of two coefficients representing the slope and intercept of the linear equation.
+
+    Returns:
+    None
+    """
     print(f'The linear trend is given by F(t) = {coefficients[0]:.2f} * t + {coefficients[1]:.2f}')
 
+def calculate_trend(X, y):
+    """
+    Calculates the trend using linear regression.
+
+    Parameters:
+    X (array-like): The independent variable.
+    y (array-like): The dependent variable.
+
+    Returns:
+    coefficients (array-like): The coefficients of the linear regression model.
+    """
+    model = train_linear_regression(X, y)
+    coefficients = get_linear_coefficients(model)
+    print_linear_equation(coefficients)
+    return coefficients
+
 def predict_with_linear_model(model, X):
+    """
+    Predicts the output using a linear model.
+
+    Parameters:
+        model (object): The trained linear model.
+        X (array-like): The input data.
+
+    Returns:
+        array-like: The predicted output.
+    """
     return model.predict(X)
    
+def predict_from_linear_coefficients(coefficients, X):
+    """
+    Predicts the values of Y based on the linear coefficients and input values X.
 
-def subtract_trend(data, trend_parameters):
+    Parameters:
+        coefficients (list): A list of two coefficients [a, b], where a is the slope and b is the intercept.
+        X (float or array-like): The input values.
+
+    Returns:
+        float or array-like: The predicted values of Y.
+
+    """
+    return coefficients[0] * X + coefficients[1]
+
+def subtract_linear_trend(t,value, trend_parameters):
     """
     Subtract the trend from the data.
 
     Parameters:
-    - data (pd.DataFrame): Time series data. 
-        includes 't' and 'value' columns.
-        't' is the time index.
-        'value' is the value of the time series.
+    - t (pd.Series): Time index.
+    - value (pd.Series): Data.
     - trend_parameters (Tuple[float, float]): Trend parameters (alpha_1, alpha_0).
 
     Returns:
-    - pd.DataFrame: residuals.
-        includes 't' and 'value' columns.
-        't' is the time index.
-        'value' is the value of the time series after subtracting the trend.
+    - residuals (pd.Series): Residuals.
+        
     """
-    # Extracting trend parameters
-    alpha_1, alpha_0 = trend_parameters
-    
+    # Calculate trend
+    trend = predict_from_linear_coefficients(trend_parameters, t)
+
     # Subtracting the trend from the data
-    data['residuals'] = data['value'] - (alpha_1 * data['t'] + alpha_0)
+    residuals = value - trend
     
-    # Creating a new DataFrame with time index and residuals
-    residuals_data = data[['t', 'residuals']]
-    
-    return residuals_data
+    return residuals
 
 
 
 if __name__ == '__main__':
-    # Load data
-    from preprocessing import load_data, daily_to_monthly, create_index
-    path_cpi_train = 'data/processed/cpi_train.csv'
-    cpi_train = load_data(path_cpi_train)
-
-    # Calculate monthly
-    cpi_train_monthly = daily_to_monthly(cpi_train)
-
-    # Create index
-    cpi_train_monthly = create_index(cpi_train_monthly)
-    
-    # Plot data
-    # plot_data(cpi_train_monthly, 'date', 'value', 'CPI', 'Time', 'CPI')
-
-    # Fit linear trend
-    trend_parameters = fit_linear_trend(cpi_train_monthly[['t','value']])
-    print('Trend parameters:', trend_parameters)
-
-    # # Save trend parameters
-    # # uncouple tuple
-    # alpha_1, alpha_0 = trend_parameters
-    # trend_parameters_df = pd.DataFrame({'alpha_1': [alpha_1], 'alpha_0': [alpha_0]})
-    # trend_parameters_df.to_csv('data/processed/trend_parameters.csv', index=False)
-
-    # Subtract trend
-    residuals = subtract_trend(cpi_train_monthly, trend_parameters)
-
-    # Print maximum value of residuals
-    print('Maximum value of residuals:', residuals['residuals'].max())
-
-    # Plot residuals
-    # plot_data(residuals, 't', 'residuals', 'Residuals', 'Time', 'Residuals')
-
-    # Save residuals
-    residuals.to_csv('data/processed/cpi_train_residuals.csv', index=False)
+    pass
