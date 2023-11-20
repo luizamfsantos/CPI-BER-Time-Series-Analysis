@@ -65,6 +65,42 @@ def subtract_ar(data, ar_params):
     return residuals
 
 
+def plot_ar_rmse(data):
+    """
+    Create a scatter plot of RMSE values against the number of lags.
+
+    Args:
+    - data (list of tuples): A list of tuples where each tuple contains
+                             an integer representing the number of lags
+                             and a float representing the RMSE value.
+
+    Returns:
+    - None
+    
+    Prints:
+    - A scatter plot of RMSE values against the number of lags.
+    """
+
+    # Unpack tuples into separate lists for n_values and rmse_values
+    n_values, rmse_values = zip(*data)
+
+    # Create a figure and axis
+    fig, ax = plt.subplots(figsize=(6, 6))
+    ax.set_title("RMSE of AR Models of order n")
+
+    # Scatter plot
+    scatter = ax.scatter(n_values, rmse_values, s=150, marker="s", color="orange", alpha=0.5, label="RMSE")
+
+    # Set labels for x and y axes
+    ax.set_xlabel('n')
+    ax.set_ylabel('RMSE')
+
+    # Show legend
+    ax.legend(loc='upper right')
+
+    # Show plot
+    plt.show()
+
 
 if __name__ == '__main__':
     pass
