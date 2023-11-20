@@ -97,7 +97,7 @@ def daily_to_monthly(data):
     return monthly_data
 
 
-def create_index(data, start_date=None):
+def create_index(data,date_col ='date', start_date=None):
     '''
     Create an index column for the data based on date. 
     It increases by 1 each month.
@@ -107,29 +107,31 @@ def create_index(data, start_date=None):
     - data (pd.DataFrame): Input data.
 
     Returns:
-    - pd.DataFrame: Data with an index column.
+    - pd.Series: Index column 't'.
     '''
-    # Ensure that there is only one entry per month
-    unique_month_count = len(data['date'].dt.to_period('M').dt.to_timestamp().unique())
-    assert len(data['date']) == unique_month_count, "There should be only one entry per month."
+    # Create a temporary variable for modified dates without changing the original 'date' column
+    modified_dates = pd.to_datetime(data[date_col]) + pd.offsets.MonthBegin(0)
 
-    # Ensure that the 'date' column is sorted, if not, sort it
-    if not data['date'].is_monotonic_increasing:
-        data = data.sort_values('date').reset_index(drop=True)
+    # Ensure that there is only one entry per month
+    unique_month_count = len(modified_dates.dt.to_period('M').dt.to_timestamp().unique())
+    assert len(modified_dates) == unique_month_count, "There should be only one entry per month."
+
+    # Ensure that the 'date' column is sorted, if not, sort the modified_dates
+    if not modified_dates.is_monotonic_increasing:
+        modified_dates = modified_dates.sort_values().reset_index(drop=True)
     
     # If not specified, use the first date of the data at time 0
     if start_date is None:
-        start_date = data['date'].min()
+        start_date = modified_dates.min()
     else:
         start_date = pd.to_datetime(start_date) 
-    
-    # Convert dates without a day to the first day of the month
-    data['date'] = data['date'].apply(lambda x: x + pd.offsets.MonthBegin(0))
-    
-    # Create the index column called 't'
-    data['t'] = (data['date'].dt.to_period('M') - start_date.to_period('M')).apply(lambda x: x.n)
 
-    return data
+    # Create the index column as a Series based on the modified dates
+    index_column = (modified_dates.dt.to_period('M') - start_date.to_period('M')).apply(lambda x: x.n)
+
+    return index_column.rename('t')
+
+
 
 def split_data(data, split_date, date_col = 'date'):
     ''' 
