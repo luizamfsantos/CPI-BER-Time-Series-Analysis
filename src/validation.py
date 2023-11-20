@@ -1,6 +1,7 @@
 import pandas as pd
+from sklearn.metrics import mean_squared_error
 
-def rsme(residuals):
+def rsme(predicted, actual):
     """
     Calculate the root mean squared error (RSME) of the residuals.
 
@@ -11,9 +12,10 @@ def rsme(residuals):
     - float: RSME of the residuals.
     """
     # Calculating the RSME
-    rsme = (residuals**2).mean()**0.5
+    rsme = mean_squared_error(actual, predicted)**0.5
 
     return rsme
+
 
 if __name__ == '__main__':
     pass
